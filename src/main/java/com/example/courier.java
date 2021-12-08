@@ -3,9 +3,6 @@ package com.example;
 import io.restassured.response.Response;
 import org.apache.commons.lang3.RandomStringUtils;
 
-import java.util.ArrayList;
-
-import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 
 public class courier {
