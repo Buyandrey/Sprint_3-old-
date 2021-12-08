@@ -13,29 +13,20 @@ public class courier {
     private  String courierLogin;
     private  String courierPassword;
     private  String courierFirstName;
-    private  String courierId;
 
     public courier() {
-        scooterRegisterCourier courier = new scooterRegisterCourier();
-        ArrayList<String> loginPass = courier.registerNewCourierAndReturnLoginPassword();
-        this.courierLogin = loginPass.get(0);
-        this.courierPassword =loginPass.get(1);
-        this.courierFirstName = loginPass.get(2);
-        courierId = getId();
 
-        //System.err.print("Constructor:\n" + "l: "+ courierLogin + "p: "+ courierPassword + "id: "+ courierId);
+        this.courierLogin       = RandomStringUtils.randomAlphabetic(10);
+        this.courierPassword    = RandomStringUtils.randomAlphabetic(10);
+        this.courierFirstName   = RandomStringUtils.randomAlphabetic(10);
     }
 
     public courier(String courierLogin, String courierPassword, String courierFirstName) {
-
         this.courierLogin     = courierLogin;
         this.courierPassword  = courierPassword;
         this.courierFirstName = courierFirstName;
-        register();
-        courierId = getId();
 
         //System.err.print("Constructor:\n" + "l: "+ courierLogin + "p: "+ courierPassword + "id: "+ courierId);
-
     }
 
     public String getLogin() {
@@ -117,7 +108,7 @@ public class courier {
         Response response = given()
                 .header("Content-type", "application/json")
                 .when()
-                .delete("https://qa-scooter.praktikum-services.ru/api/v1/courier/"+courierId);
+                .delete("https://qa-scooter.praktikum-services.ru/api/v1/courier/"+getId());
 
        // System.err.print(response.body().asString());
 
