@@ -56,4 +56,11 @@ public class testCreateCourier extends testFuncs{
     public void testCorrectCreate(){
         assertEquals("Correct creation courier",201,create(l,p,fn));
     }
+    @Test
+    public void delC(){
+        create(l,p,fn);
+        login(l,p);
+        delete(getId());
+        login(l,p);
+    }
 }

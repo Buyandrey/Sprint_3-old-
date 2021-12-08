@@ -46,11 +46,10 @@ public class scooterRegisterCourier {
         if (response.statusCode() == 201) {
             loginPass.add(courierLogin);
             loginPass.add(courierPassword);
+            loginPass.add(courierFirstName);
         }
 
         // возвращаем список
         return loginPass;
-
     }
-
 }

@@ -14,6 +14,7 @@ public class testFuncs {
     public String error400BadRequest ="{\"code\":400,\"message\":\"Недостаточно данных для входа\"}";
     public String error404NotFounded ="{\"code\":404,\"message\":\"Учетная запись не найдена\"}";
     public String l,p,fn, answerBody;
+    String COURIER_PATH="https://qa-scooter.praktikum-services.ru/api/v1/courier";
 
     public int code;
 
@@ -29,7 +30,7 @@ public class testFuncs {
                 .post("https://qa-scooter.praktikum-services.ru/api/v1/courier");
         answerBody = response.getBody().asString();
         code = response.statusCode();
-        //System.err.println(answerBody +','+ code);
+        System.err.println(answerBody +','+ code);
         return  code;
     }
     public int login(String l, String p){
@@ -43,8 +44,23 @@ public class testFuncs {
                 .post("https://qa-scooter.praktikum-services.ru/api/v1/courier/login");
         answerBody =response.getBody().asString();
         code =response.statusCode();
-        //System.err.println(answerBody + code);
+        System.err.println(answerBody + code);
         return code;
     }
-
+    public String getId(){
+        int indexOfDualDots = answerBody.indexOf(':');
+        int indexOfCloseBracket = answerBody.indexOf('}');
+        System.err.println(answerBody.substring(indexOfDualDots+1,indexOfCloseBracket));
+        return answerBody.substring(indexOfDualDots+1,indexOfCloseBracket);
+    }
+    public int delete(String id){
+        Response response = given()
+                .header("Content-type", "application/json")
+                .when()
+                .delete("https://qa-scooter.praktikum-services.ru/api/v1/courier/"+id);
+        answerBody = response.getBody().asString();
+        code = response.statusCode();
+        System.err.println(answerBody);
+        return  code;
+    }
 }
