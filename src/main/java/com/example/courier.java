@@ -10,16 +10,16 @@ import static io.restassured.RestAssured.given;
 
 public class courier {
 
-    private final String courierLogin;
-    private final String courierPassword;
-    private final String courierFirstName;
-    private final String courierId;
+    private  String courierLogin;
+    private  String courierPassword;
+    private  String courierFirstName;
+    private  String courierId;
 
     public courier() {
         scooterRegisterCourier courier = new scooterRegisterCourier();
         ArrayList<String> loginPass = courier.registerNewCourierAndReturnLoginPassword();
         this.courierLogin = loginPass.get(0);
-        this.courierPassword =loginPass .get(1);
+        this.courierPassword =loginPass.get(1);
         this.courierFirstName = loginPass.get(2);
         courierId = getId();
 
@@ -79,7 +79,22 @@ public class courier {
                 .when()
                 .post("https://qa-scooter.praktikum-services.ru/api/v1/courier");
 
-        System.err.print(response.body().asString());
+        //System.err.print(response.body().asString());
+
+        return response.body().asString();
+    }
+    public String login(String courierLogin, String courierPassword){
+        String registerRequestBody = "{\"login\":\"" + courierLogin + "\","
+                + "\"password\":\"" + courierPassword + "\"}";
+
+        Response response = given()
+                .header("Content-type", "application/json")
+                .and()
+                .body(registerRequestBody)
+                .when()
+                .post("https://qa-scooter.praktikum-services.ru/api/v1/courier/login");
+
+       // System.err.print(response.body().asString());
 
         return response.body().asString();
     }
@@ -94,7 +109,7 @@ public class courier {
                 .when()
                 .post("https://qa-scooter.praktikum-services.ru/api/v1/courier/login");
 
-        System.err.print(response.body().asString());
+        // System.err.print(response.body().asString());
 
         return response.body().asString();
     }
@@ -104,8 +119,14 @@ public class courier {
                 .when()
                 .delete("https://qa-scooter.praktikum-services.ru/api/v1/courier/"+courierId);
 
-        System.err.print(response.body().asString());
+       // System.err.print(response.body().asString());
 
         return response.body().asString();
+    }
+    public void setEmptyLogin(){
+        courierLogin="";
+    }
+    public void setEmptyPassword(){
+        courierPassword="";
     }
 }
