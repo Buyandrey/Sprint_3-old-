@@ -3,65 +3,69 @@ import org.junit.After;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
-public class testLoginCourier extends testFuncs{
+public class testLoginCourier {
+    //public String error409Conflict ="{\"code\":400,\"message\":\"Недостаточно данных для создания учетной записи\"}";
+    //public String code200Ok ="{\"ok\":true}";
+    public String error400BadRequest = "{\"code\":400,\"message\":\"Недостаточно данных для входа\"}";
+    public String error404NotFounded = "{\"code\":404,\"message\":\"Учетная запись не найдена\"}";
     courier deliveryMan;
+
     @After
-    public void deleteCourier(){
-        code=0;
-        answerBody="";
+    public void deleteCourier() {
         deliveryMan.delete();
     }
+
     @Test
-    public void testSuccessfullyLoginWithAllNecessaryFields() {
+    public void testSuccessfullyLoginWithAllNecessaryFieldsRwturnId() {
         deliveryMan = new courier();
-        assertEquals("Successfully login",true,deliveryMan.login().contains("id"));
+        assertEquals("Successfully login", true, deliveryMan.login().contains(deliveryMan.getId()));
     }
+
     @Test
-    public void testLoginWithoutLogin() throws Exception{
-        deliveryMan= new courier("","1234","1245");
-        assertEquals("Login without login",true,deliveryMan.login().equals(error400BadRequest));
+    public void testLoginWithoutLogin() throws Exception {
+        deliveryMan = new courier("", "1234", "1245");
+        assertEquals("Login without login", true, deliveryMan.login().equals(error400BadRequest));
     }
+
     @Test
-    public void testLoginWithoutPassword() throws Exception{
-        deliveryMan= new courier("641fgadfg3416","","1245");
+    public void testLoginWithoutPassword() throws Exception {
+        deliveryMan = new courier("641fgadfg3416", "", "1245");
         //deliveryMan.setEmptyPassword();
-        assertEquals("Login without password",true,deliveryMan.login().equals(error400BadRequest));
+        assertEquals("Login without password", true, deliveryMan.login().equals(error400BadRequest));
     }
+
     @Test
-    public void testLoginWithoutLoginAndPassword() throws Exception{
+    public void testLoginWithoutLoginAndPassword() throws Exception {
         //deliveryMan.setEmptyPassword();
         //deliveryMan.setEmptyLogin();
-        deliveryMan= new courier("","","2134");
-        assertEquals("Login without login and password",true,deliveryMan.login().equals(error400BadRequest));
+        deliveryMan = new courier("", "", "2134");
+        assertEquals("Login without login and password", true, deliveryMan.login().equals(error400BadRequest));
     }
+
     @Test
-    public void testLoginWithUnexistedCourier() throws Exception{
+    public void testLoginWithUnexistedCourier() throws Exception {
         deliveryMan = new courier();
 
-        assertEquals("Login with unexisted courier",true,
+        assertEquals("Login with unexisted courier", true,
                 deliveryMan
-                        .login("80-ew7pryhf;rthertvnuidshf","4898+471658457yt-phb2")
+                        .login("80-ew7pryhf;rthertvnuidshf", "4898+471658457yt-phb2")
                         .equals(error404NotFounded));
     }
+
     @Test
-    public void testLoginWithUncorrectLoginAndCorrectLogin() throws Exception{
-        deliveryMan= new courier();
-        assertEquals("Login with wrong login",true,deliveryMan.login(
-                deliveryMan.getLogin()+"sdfss", deliveryMan.getPassword())
+    public void testLoginWithUncorrectLoginAndCorrectLogin() throws Exception {
+        deliveryMan = new courier();
+        assertEquals("Login with wrong login", true, deliveryMan.login(
+                deliveryMan.getLogin() + "sdfss", deliveryMan.getPassword())
                 .equals(error404NotFounded));
     }
+
     @Test
-    public void testLoginWithUncorrectPasswordAndCorrectlogin() throws Exception{
-        deliveryMan= new courier();
-        assertEquals("Login with wrong login",true,deliveryMan.login(
-                deliveryMan.getLogin(), deliveryMan.getPassword()+"sdfss")
+    public void testLoginWithUncorrectPasswordAndCorrectlogin() throws Exception {
+        deliveryMan = new courier();
+        assertEquals("Login with wrong login", true, deliveryMan.login(
+                deliveryMan.getLogin(), deliveryMan.getPassword() + "sdfss")
                 .equals(error404NotFounded));
 
     }
-    @Test
-    public void testIdIsOkWhenLoginWasCorrect(){
-        deliveryMan= new courier();
-        assertEquals("Successfully login",true,deliveryMan.login().contains(deliveryMan.getId()));
-    }
-
 }
