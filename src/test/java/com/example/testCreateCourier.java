@@ -13,22 +13,20 @@ public class testCreateCourier extends testFuncs{
 
     @Before
     public void before(){
-       l = RandomStringUtils.randomAlphabetic(10);
-        // с помощью библиотеки RandomStringUtils генерируем пароль
-       p = RandomStringUtils.randomAlphabetic(10);
-        // с помощью библиотеки RandomStringUtils генерируем имя курьера
-       fn = RandomStringUtils.randomAlphabetic(10);
        answerBody ="";
        code=0;
     }
     @Test
     public void testCreationCourierIsPossible(){
+        courier c = new courier();
+        /*
         create(l,p,fn);
         assertEquals("Creation courier",
                 code200Ok,
                 answerBody
         );
         assertEquals("Login new courier successfull",200,login(l,p));
+        */
     }
      @Test
     public void testSameCourierCannotCreateTwice(){

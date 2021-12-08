@@ -50,6 +50,7 @@ public class scooterRegisterCourier {
         }
 
         // возвращаем список
+        System.out.println("123"+loginPass);
         return loginPass;
     }
 }

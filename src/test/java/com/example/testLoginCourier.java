@@ -1,5 +1,7 @@
 package com.example;
-
+import com.example.courier;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import static io.restassured.RestAssured.given;
@@ -9,12 +11,23 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertEquals;
 
 public class testLoginCourier extends testFuncs{
-    int count=0;
-    public String lFixed ="buyandrey96", pFixed ="1234", fnFixed ="andrey",idFixed="11134";
+    courier deliveryMan;
+    //courier andrey = new courier("buyandrey96","1234","Andrey");
+    @Before
+    public void createCourier(){
+        deliveryMan = new courier();
+        System.out.println(deliveryMan.getLogin() + " " + deliveryMan.getPassword() + " "  + deliveryMan.getId());
+    }
+    @After
+    public void deleteCourier(){
+        deliveryMan.delete();
+    }
+
     @Test
     public void testSuccessfullyLoginWithAllNecessaryFields() {
-        assertEquals("Successfully login",200,login(lFixed, pFixed));
+        assertEquals("Successfully login",true,deliveryMan.login().contains("id"));
     }
+/*
     @Test
     public void testLoginWithoutLogin() throws Exception{
         assertEquals("Login without login",400,login("", pFixed));
@@ -45,4 +58,5 @@ public class testLoginCourier extends testFuncs{
         assertEquals("Successfully login",200,login(lFixed, pFixed));
         assertEquals("Successfully login and id OK",true,answerBody.contains(idFixed));
     }
+*/
 }

@@ -3,23 +3,50 @@ package com.example;
 import io.restassured.response.Response;
 import org.apache.commons.lang3.RandomStringUtils;
 
+import java.util.ArrayList;
+
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 
 public class courier {
-    private final scooterRegisterCourier courier;
+
     private final String courierLogin;
     private final String courierPassword;
     private final String courierFirstName;
     private final String courierId;
-    public courier(){
-        courier = new scooterRegisterCourier();
-        courierLogin = courier.registerNewCourierAndReturnLoginPassword().get(0);
-        courierPassword = courier.registerNewCourierAndReturnLoginPassword().get(1);
-        courierFirstName = courier.registerNewCourierAndReturnLoginPassword().get(2);
-        courierId=getId();
+
+    public courier() {
+        scooterRegisterCourier courier = new scooterRegisterCourier();
+        ArrayList<String> loginPass = courier.registerNewCourierAndReturnLoginPassword();
+        this.courierLogin = loginPass.get(0);
+        this.courierPassword =loginPass .get(1);
+        this.courierFirstName = loginPass.get(2);
+        courierId = getId();
+
+        //System.err.print("Constructor:\n" + "l: "+ courierLogin + "p: "+ courierPassword + "id: "+ courierId);
     }
-    public String getId(){
+
+    public courier(String courierLogin, String courierPassword, String courierFirstName) {
+
+        this.courierLogin     = courierLogin;
+        this.courierPassword  = courierPassword;
+        this.courierFirstName = courierFirstName;
+        register();
+        courierId = getId();
+
+        //System.err.print("Constructor:\n" + "l: "+ courierLogin + "p: "+ courierPassword + "id: "+ courierId);
+
+    }
+
+    public String getLogin() {
+        return courierLogin;
+    }
+
+    public String getPassword() {
+        return courierPassword;
+    }
+
+    public String getId() {
         /*получение ID
          * Запрос на логин и потом получение id из ответа
          * */
@@ -31,11 +58,54 @@ public class courier {
                 .body(registerRequestBody)
                 .when()
                 .post("https://qa-scooter.praktikum-services.ru/api/v1/courier/login");
-        String answerBody=response.
+        String answerBody = response.
                 getBody().
                 asString();
-        System.err.println("id: "+ answerBody.substring(answerBody.indexOf(':')+1,answerBody.indexOf('}')));
-        return answerBody.substring(answerBody.indexOf(':')+1,answerBody.indexOf('}') );
+
+        //System.err.println("id: " + answerBody.substring(answerBody.indexOf(':') + 1, answerBody.indexOf('}')));
+
+        return answerBody.substring(answerBody.indexOf(':') + 1, answerBody.indexOf('}'));
     }
 
+    public String register() {
+        String registerRequestBody = "{\"login\":\"" + courierLogin + "\","
+                + "\"password\":\"" + courierPassword + "\","
+                + "\"firstName\":\"" + courierFirstName + "\"}";
+
+        Response response = given()
+                .header("Content-type", "application/json")
+                .and()
+                .body(registerRequestBody)
+                .when()
+                .post("https://qa-scooter.praktikum-services.ru/api/v1/courier");
+
+        System.err.print(response.body().asString());
+
+        return response.body().asString();
+    }
+    public String login(){
+        String registerRequestBody = "{\"login\":\"" + courierLogin + "\","
+                + "\"password\":\"" + courierPassword + "\"}";
+
+        Response response = given()
+                .header("Content-type", "application/json")
+                .and()
+                .body(registerRequestBody)
+                .when()
+                .post("https://qa-scooter.praktikum-services.ru/api/v1/courier/login");
+
+        System.err.print(response.body().asString());
+
+        return response.body().asString();
+    }
+    public String  delete(){
+        Response response = given()
+                .header("Content-type", "application/json")
+                .when()
+                .delete("https://qa-scooter.praktikum-services.ru/api/v1/courier/"+courierId);
+
+        System.err.print(response.body().asString());
+
+        return response.body().asString();
+    }
 }
