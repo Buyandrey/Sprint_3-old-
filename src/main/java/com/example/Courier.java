@@ -5,20 +5,20 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 import static io.restassured.RestAssured.given;
 
-public class courier {
+public class Courier {
 
     private  String courierLogin;
     private  String courierPassword;
     private  String courierFirstName;
 
-    public courier() {
+    public Courier() {
 
         this.courierLogin       = RandomStringUtils.randomAlphabetic(10);
         this.courierPassword    = RandomStringUtils.randomAlphabetic(10);
         this.courierFirstName   = RandomStringUtils.randomAlphabetic(10);
     }
 
-    public courier(String courierLogin, String courierPassword, String courierFirstName) {
+    public Courier(String courierLogin, String courierPassword, String courierFirstName) {
         this.courierLogin     = courierLogin;
         this.courierPassword  = courierPassword;
         this.courierFirstName = courierFirstName;
@@ -82,7 +82,7 @@ public class courier {
                 .when()
                 .post("https://qa-scooter.praktikum-services.ru/api/v1/courier/login");
 
-       // System.err.print(response.body().asString());
+        // System.err.print(response.body().asString());
 
         return response.body().asString();
     }
@@ -107,7 +107,7 @@ public class courier {
                 .when()
                 .delete("https://qa-scooter.praktikum-services.ru/api/v1/courier/"+getId());
 
-       // System.err.print(response.body().asString());
+        // System.err.print(response.body().asString());
 
         return response.body().asString();
     }

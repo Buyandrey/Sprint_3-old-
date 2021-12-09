@@ -7,7 +7,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class testCreateCourier {
-courier deliveryMan;
+Courier deliveryMan;
     String error409Conflict="{\"code\":409,\"message\":\"Этот логин уже используется. Попробуйте другой.\"}";
     String error400ConflictEmpty ="{\"code\":400,\"message\":\"Недостаточно данных для создания учетной записи\"}";
     String code200Ok ="{\"ok\":true}";
@@ -17,31 +17,31 @@ courier deliveryMan;
     }
     @Test
     public void testSameCourierCannotCreateTwice(){
-        deliveryMan = new courier("NONUNIQUE","NONUNIQUE","NONUNIQUE");
+        deliveryMan = new Courier("NONUNIQUE","NONUNIQUE","NONUNIQUE");
         deliveryMan.register();
-        courier deliveryManDoppelganger = new courier("NONUNIQUE","NONUNIQUE","NONUNIQUE");
+        Courier deliveryManDoppelganger = new Courier("NONUNIQUE","NONUNIQUE","NONUNIQUE");
         deliveryManDoppelganger.register().equals(error409Conflict);
     }
     @Test
     public void testCannotCreateEmptyCourier(){
-        deliveryMan = new courier("","","");
+        deliveryMan = new Courier("","","");
         assertEquals("Creation courier without login and password",error400ConflictEmpty,deliveryMan.register());
      }
     @Test
     public void testCannotCreateCourierWithoutLogin(){
-        deliveryMan = new courier("",RandomStringUtils.randomAlphabetic(10), RandomStringUtils.randomAlphabetic(10));
+        deliveryMan = new Courier("",RandomStringUtils.randomAlphabetic(10), RandomStringUtils.randomAlphabetic(10));
         assertEquals("Creation courier without login", error400ConflictEmpty,deliveryMan.register());
     }
 
     @Test
     public void testCannotCreateCourierWithoutPassword(){
-        deliveryMan = new courier(RandomStringUtils.randomAlphabetic(10),"", RandomStringUtils.randomAlphabetic(10));
+        deliveryMan = new Courier(RandomStringUtils.randomAlphabetic(10),"", RandomStringUtils.randomAlphabetic(10));
         assertEquals("Creation courier without password",error400ConflictEmpty,deliveryMan.register());
     }
 
     @Test
     public void testCorrectCreate(){
-        deliveryMan = new courier();
+        deliveryMan = new Courier();
         assertEquals("Correct creation courier",code200Ok,deliveryMan.register());
     }
 }
