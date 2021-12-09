@@ -1,6 +1,7 @@
 package com.example;
 
 
+import io.qameta.allure.junit4.DisplayName;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -34,6 +35,7 @@ public class TestOrder {
                 c2
         };
     }
+    @DisplayName ("Chect orders with different colors")
     @Test
     public void checkColors()throws Exception{
         Order order = new Order();
