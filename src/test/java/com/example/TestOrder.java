@@ -35,7 +35,7 @@ public class TestOrder {
                 c2
         };
     }
-    @DisplayName ("Chect orders with different colors")
+    @DisplayName ("Test orders with different colors or without colors are created correctly")
     @Test
     public void checkColors()throws Exception{
         Order order = new Order();
