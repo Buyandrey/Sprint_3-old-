@@ -59,7 +59,7 @@ public class Order {
 
         return response.body().asString();
     }
-    public String getOrger()
+    public String getOrgerList()
             //Проверь, что в тело ответа возвращается список заказов.
             throws Exception{
         Response response = given()
