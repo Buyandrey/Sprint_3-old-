@@ -10,6 +10,7 @@ public class Courier {
     private  String courierLogin;
     private  String courierPassword;
     private  String courierFirstName;
+    private  String courierId;
 
     public Courier() {
 
@@ -81,8 +82,9 @@ public class Courier {
                 .body(registerRequestBody)
                 .when()
                 .post("https://qa-scooter.praktikum-services.ru/api/v1/courier/login");
-
+        courierId=response.body().asString().substring(response.body().asString().indexOf(':') + 1, response.body().asString().indexOf('}'));
         // System.err.print(response.body().asString());
+        //System.err.print(courierId);
 
         return response.body().asString();
     }
@@ -96,8 +98,10 @@ public class Courier {
                 .body(registerRequestBody)
                 .when()
                 .post("https://qa-scooter.praktikum-services.ru/api/v1/courier/login");
+        courierId=response.body().asString().substring(response.body().asString().indexOf(':') + 1, response.body().asString().indexOf('}'));
 
-        // System.err.print(response.body().asString());
+        System.err.print(response.body().asString());
+        System.err.print(courierId);
 
         return response.body().asString();
     }
@@ -116,5 +120,37 @@ public class Courier {
     }
     public void setEmptyPassword(){
         courierPassword="";
+    }
+    public String acceptOrder(String orderId, String courierId){
+        String registerRequestBody = "{\"\":\"" + courierLogin + "\","
+                + "\"password\":\"" + courierPassword + "\","
+                + "\"firstName\":\"" + courierFirstName + "\"}";
+
+        Response response = given()
+                .header("Content-type", "application/json")
+                .and()
+                .body(registerRequestBody)
+                .when()
+                .put("https://qa-scooter.praktikum-services.ru/api/v1/orders/accept/:id");
+
+        //System.err.print(response.body().asString());
+
+        return response.body().asString();
+    }
+    public String acceptOrder(String orderId){
+        String registerRequestBody = "{\"login\":\"" + courierLogin + "\","
+                + "\"password\":\"" + courierPassword + "\","
+                + "\"firstName\":\"" + courierFirstName + "\"}";
+
+        Response response = given()
+                .header("Content-type", "application/json")
+                .and()
+                .body(registerRequestBody)
+                .when()
+                .put("https://qa-scooter.praktikum-services.ru/api/v1/orders/accept/:id?:courierId");
+
+        //System.err.print(response.body().asString());
+
+        return response.body().asString();
     }
 }

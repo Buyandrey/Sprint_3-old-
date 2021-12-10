@@ -59,4 +59,26 @@ public class Order {
 
         return response.body().asString();
     }
+    public String getOrger()
+            //Проверь, что в тело ответа возвращается список заказов.
+            throws Exception{
+        Response response = given()
+                .header("Content-type", "application/json")
+                .when()
+                .get("https://qa-scooter.praktikum-services.ru/api/v1/orders");
+        //System.err.println(response.body().asString());
+        return response.body().asString();
+    }
+    public String getOrderFirstId(){
+        Response response = given()
+                .header("Content-type", "application/json")
+                .when()
+                .get("https://qa-scooter.praktikum-services.ru/api/v1/orders");
+
+        int iId= response.body().asString().indexOf("id");
+        int firstCommaId= response.body().asString().indexOf(",");
+        //System.err.println(response.body().asString().substring(iId+3,firstCommaId));
+
+        return response.body().asString().substring(iId+4,firstCommaId);
+    }
 }

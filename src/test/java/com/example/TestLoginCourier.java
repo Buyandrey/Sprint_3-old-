@@ -17,7 +17,7 @@ public class TestLoginCourier {
     }
     @DisplayName ("Test Login courier with correct login and password")
     @Test
-    public void testSuccessfullyLoginWithAllNecessaryFieldsRwturnId() {
+    public void testSuccessfullyLoginWithAllNecessaryFieldsAndReturnId() {
         deliveryMan = new Courier();deliveryMan.register();
         assertEquals("Successfully login", true, deliveryMan.login().contains(deliveryMan.getId()));
     }
