@@ -6,45 +6,55 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class TestLoginCourier {
-
+// Коды ответов ошибок из api
     public String error400BadRequest = "{\"code\":400,\"message\":\"Недостаточно данных для входа\"}";
     public String error404NotFounded = "{\"code\":404,\"message\":\"Учетная запись не найдена\"}";
+// Создание курьера
     Courier deliveryMan;
-
+// Удаление курьера после каждого теста
     @After
     public void deleteCourier() {
         deliveryMan.delete();
     }
-    @DisplayName ("Test Login courier with correct login and password")
+// Тест из задания 2.1, 2.6  курьер может авторизоваться; успешный запрос возвращает id */
+    @DisplayName ("Test Login courier and return ID")
     @Test
-    public void testSuccessfullyLoginWithAllNecessaryFieldsAndReturnId() {
+    public void testSuccessfullyLoginAndReturnId() {
         deliveryMan = new Courier();deliveryMan.register();
         assertEquals("Successfully login", true, deliveryMan.login().contains(deliveryMan.getId()));
     }
+// Тест из задания 2.2  для авторизации нужно передать все обязательные поля; */
+    @DisplayName ("Test Login courier with correct login and password")
+    @Test
+    public void testSuccessfullyLoginWithAllNecessaryFields() {
+        deliveryMan = new Courier("buyandrey101221","1234","Andrey");deliveryMan.register();
+        assertEquals("Successfully login", true, deliveryMan.login().contains(deliveryMan.getId()));
+    }
+/* Тест из задания 2.4 если какого-то поля нет, запрос возвращает ошибку*/
     @DisplayName ("Test Login courier without login is impossible")
     @Test
     public void testLoginWithoutLogin() throws Exception {
-        deliveryMan = new Courier("", RandomStringUtils.randomAlphabetic(10), RandomStringUtils.randomAlphabetic(10));deliveryMan.register();
+        deliveryMan = new Courier("", RandomStringUtils.randomAlphabetic(10),
+                RandomStringUtils.randomAlphabetic(10));deliveryMan.register();
         assertEquals("Login without login", true, deliveryMan.login().equals(error400BadRequest));
     }
-
+/* Тест из задания 2.4 если какого-то поля нет, запрос возвращает ошибку*/
     @DisplayName ("Test Login courier without password is impossible")
     @Test
     public void testLoginWithoutPassword() throws Exception {
-        deliveryMan = new Courier(RandomStringUtils.randomAlphabetic(10), "", RandomStringUtils.randomAlphabetic(10));deliveryMan.register();
-        //deliveryMan.setEmptyPassword();
+        deliveryMan = new Courier(RandomStringUtils.randomAlphabetic(10),
+                "", RandomStringUtils.randomAlphabetic(10));deliveryMan.register();
         assertEquals("Login without password", true, deliveryMan.login().equals(error400BadRequest));
     }
-
+/* Тест из задания 2.4 если какого-то поля нет, запрос возвращает ошибку*/
     @DisplayName ("Test Login courier without password and login is impossible")
     @Test
     public void testLoginWithoutLoginAndPassword() throws Exception {
-        //deliveryMan.setEmptyPassword();
-        //deliveryMan.setEmptyLogin();
         deliveryMan = new Courier("", "", RandomStringUtils.randomAlphabetic(10));deliveryMan.register();
         assertEquals("Login without login and password", true, deliveryMan.login().equals(error400BadRequest));
     }
 
+/* Тест из задания 2.5 если авторизоваться под несуществующим пользователем, запрос возвращает ошибку */
     @DisplayName ("Test Login courier with unexisted courier is impossible")
     @Test
     public void testLoginWithUnexistedCourier() throws Exception {
@@ -55,14 +65,18 @@ public class TestLoginCourier {
                         .login(RandomStringUtils.randomAlphabetic(10), RandomStringUtils.randomAlphabetic(10))
                         .equals(error404NotFounded));
     }
+
+/* Тест из задания 2.3 система вернёт ошибку, если неправильно указать логин или пароль; */
     @DisplayName ("Test Login courier with wrong login is impossible")
     @Test
-    public void testLoginWithUncorrectLoginAndCorrectLogin() throws Exception {
+    public void testLoginWithUncorrectLoginAndCorrectPassword() throws Exception {
         deliveryMan = new Courier();deliveryMan.register();
         assertEquals("Login with wrong login", true, deliveryMan.login(
                 deliveryMan.getLogin() + "sdfss", deliveryMan.getPassword())
                 .equals(error404NotFounded));
     }
+
+/* Тест из задания 2.3 система вернёт ошибку, если неправильно указать логин или пароль; */
     @DisplayName ("Test Login courier with wrong password is impossible")
     @Test
     public void testLoginWithUncorrectPasswordAndCorrectlogin() throws Exception {
@@ -70,6 +84,5 @@ public class TestLoginCourier {
         assertEquals("Login with wrong login", true, deliveryMan.login(
                 deliveryMan.getLogin(), deliveryMan.getPassword() + "sdfss")
                 .equals(error404NotFounded));
-
     }
 }
