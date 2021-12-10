@@ -7,8 +7,8 @@ import static org.junit.Assert.assertEquals;
 
 public class TestLoginCourier {
 // Коды ответов ошибок из api
-    public String error400BadRequest = "{\"code\":400,\"message\":\"Недостаточно данных для входа\"}";
-    public String error404NotFounded = "{\"code\":404,\"message\":\"Учетная запись не найдена\"}";
+    public String ERROR_400_BAD_REQUEST = "{\"code\":400,\"message\":\"Недостаточно данных для входа\"}";
+    public String ERROR_404_NOT_FOUNDED = "{\"code\":404,\"message\":\"Учетная запись не найдена\"}";
 // Создание курьера
     Courier deliveryMan;
 // Удаление курьера после каждого теста
@@ -36,7 +36,7 @@ public class TestLoginCourier {
     public void testLoginWithoutLogin() throws Exception {
         deliveryMan = new Courier("", RandomStringUtils.randomAlphabetic(10),
                 RandomStringUtils.randomAlphabetic(10));deliveryMan.register();
-        assertEquals("Login without login", true, deliveryMan.login().equals(error400BadRequest));
+        assertEquals("Login without login", true, deliveryMan.login().equals(ERROR_400_BAD_REQUEST));
     }
 /* Тест из задания 2.4 если какого-то поля нет, запрос возвращает ошибку*/
     @DisplayName ("Test Login courier without password is impossible")
@@ -44,14 +44,14 @@ public class TestLoginCourier {
     public void testLoginWithoutPassword() throws Exception {
         deliveryMan = new Courier(RandomStringUtils.randomAlphabetic(10),
                 "", RandomStringUtils.randomAlphabetic(10));deliveryMan.register();
-        assertEquals("Login without password", true, deliveryMan.login().equals(error400BadRequest));
+        assertEquals("Login without password", true, deliveryMan.login().equals(ERROR_400_BAD_REQUEST));
     }
 /* Тест из задания 2.4 если какого-то поля нет, запрос возвращает ошибку*/
     @DisplayName ("Test Login courier without password and login is impossible")
     @Test
     public void testLoginWithoutLoginAndPassword() throws Exception {
         deliveryMan = new Courier("", "", RandomStringUtils.randomAlphabetic(10));deliveryMan.register();
-        assertEquals("Login without login and password", true, deliveryMan.login().equals(error400BadRequest));
+        assertEquals("Login without login and password", true, deliveryMan.login().equals(ERROR_400_BAD_REQUEST));
     }
 
 /* Тест из задания 2.5 если авторизоваться под несуществующим пользователем, запрос возвращает ошибку */
@@ -63,7 +63,7 @@ public class TestLoginCourier {
         assertEquals("Login with unexisted courier", true,
                 deliveryMan
                         .login(RandomStringUtils.randomAlphabetic(10), RandomStringUtils.randomAlphabetic(10))
-                        .equals(error404NotFounded));
+                        .equals(ERROR_404_NOT_FOUNDED));
     }
 
 /* Тест из задания 2.3 система вернёт ошибку, если неправильно указать логин или пароль; */
@@ -73,7 +73,7 @@ public class TestLoginCourier {
         deliveryMan = new Courier();deliveryMan.register();
         assertEquals("Login with wrong login", true, deliveryMan.login(
                 deliveryMan.getLogin() + "sdfss", deliveryMan.getPassword())
-                .equals(error404NotFounded));
+                .equals(ERROR_404_NOT_FOUNDED));
     }
 
 /* Тест из задания 2.3 система вернёт ошибку, если неправильно указать логин или пароль; */
@@ -83,6 +83,6 @@ public class TestLoginCourier {
         deliveryMan = new Courier();deliveryMan.register();
         assertEquals("Login with wrong login", true, deliveryMan.login(
                 deliveryMan.getLogin(), deliveryMan.getPassword() + "sdfss")
-                .equals(error404NotFounded));
+                .equals(ERROR_404_NOT_FOUNDED));
     }
 }

@@ -11,9 +11,9 @@ public class TestCreateCourier {
 // Создание курьера
     Courier deliveryMan;
 // Тексты ответа на запрос
-    String error409Conflict="{\"code\":409,\"message\":\"Этот логин уже используется. Попробуйте другой.\"}";
-    String error400ConflictEmpty ="{\"code\":400,\"message\":\"Недостаточно данных для создания учетной записи\"}";
-    String code200Ok ="{\"ok\":true}";
+    public final String ERROR_409_CONFLICT ="{\"code\":409,\"message\":\"Этот логин уже используется. Попробуйте другой.\"}";
+    public final String ERROR_400_CONFLICT_EMPTY ="{\"code\":400,\"message\":\"Недостаточно данных для создания учетной записи\"}";
+    public final String CODE_200_OK ="{\"ok\":true}";
 
 // Удаление курьера после каждого теста
     @After
@@ -31,7 +31,7 @@ public class TestCreateCourier {
 // Создание второго курьера через конструктор с теми же полями что и у первого
         Courier deliveryManDoppelganger = new Courier("NONUNIQUE","NONUNIQUE","NONUNIQUE");
 // Ожидание ошибки 409 при регистрации двойника
-        assertEquals("Test the same courier can't be created twice",error409Conflict,deliveryManDoppelganger.register());
+        assertEquals("Test the same courier can't be created twice", ERROR_409_CONFLICT,deliveryManDoppelganger.register());
     }
 // Тест из задания 1.3 чтобы создать курьера, нужно передать в ручку все обязательные поля
     @DisplayName("Test create empty courier is impossible")
@@ -40,7 +40,7 @@ public class TestCreateCourier {
 // Создание курьера с пустыми полями через конструктор курьера
         deliveryMan = new Courier("","","");
 // Ожидание кода ошибки 400
-        assertEquals("Creation courier without login and password",error400ConflictEmpty,deliveryMan.register());
+        assertEquals("Creation courier without login and password", ERROR_400_CONFLICT_EMPTY,deliveryMan.register());
      }
 /* Тест из задания 1.6 если одного из полей нет, запрос возвращает ошибку */
     @DisplayName("Test create courier without login is impossible")
@@ -49,7 +49,7 @@ public class TestCreateCourier {
 // Создание курьера с пустым полем логина через конструктор курьера
         deliveryMan = new Courier("",RandomStringUtils.randomAlphabetic(10), RandomStringUtils.randomAlphabetic(10));
 // Ожидание кода ошибки 400
-        assertEquals("Creation courier without login", error400ConflictEmpty,deliveryMan.register());
+        assertEquals("Creation courier without login", ERROR_400_CONFLICT_EMPTY,deliveryMan.register());
     }
 /* Тест из задания 1.6 если одного из полей нет, запрос возвращает ошибку*/
     @DisplayName("Test create courier without password is impossible")
@@ -58,7 +58,7 @@ public class TestCreateCourier {
 // Создание курьера с пустым полем пароль через конструктор курьера
         deliveryMan = new Courier(RandomStringUtils.randomAlphabetic(10),"", RandomStringUtils.randomAlphabetic(10));
 // Ожидание кода ошибки 400
-        assertEquals("Creation courier without password",error400ConflictEmpty,deliveryMan.register());
+        assertEquals("Creation courier without password", ERROR_400_CONFLICT_EMPTY,deliveryMan.register());
     }
 /* Тест из задания 1.1, 1.3 ,1.5 курьера можно создать; чтобы создать курьера, нужно передать в ручку все обязательные поля; успешный запрос возвращает ok: true */
     @DisplayName("Test correct creation")
@@ -67,6 +67,6 @@ public class TestCreateCourier {
 // Создание курьера с заполненными обязательными полями
         deliveryMan = new Courier(RandomStringUtils.randomAlphabetic(10),RandomStringUtils.randomAlphabetic(10),RandomStringUtils.randomAlphabetic(10));
 // Ожидание кода 200
-        assertEquals("Correct creation courier",code200Ok,deliveryMan.register());
+        assertEquals("Correct creation courier", CODE_200_OK,deliveryMan.register());
     }
 }

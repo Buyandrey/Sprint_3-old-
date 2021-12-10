@@ -11,14 +11,14 @@ public class Courier {
     private  String courierPassword;
     private  String courierFirstName;
     private  String courierId;
-
+//cоздание рэндомного курьера без входных параметров
     public Courier() {
 
         this.courierLogin       = RandomStringUtils.randomAlphabetic(10);
         this.courierPassword    = RandomStringUtils.randomAlphabetic(10);
         this.courierFirstName   = RandomStringUtils.randomAlphabetic(10);
     }
-
+//cоздание  курьера по входным параметрам
     public Courier(String courierLogin, String courierPassword, String courierFirstName) {
         this.courierLogin     = courierLogin;
         this.courierPassword  = courierPassword;
@@ -55,7 +55,7 @@ public class Courier {
 
         return answerBody.substring(answerBody.indexOf(':') + 1, answerBody.indexOf('}'));
     }
-
+// запрос на регистрацию курьера
     public String register() {
         String registerRequestBody = "{\"login\":\"" + courierLogin + "\","
                 + "\"password\":\"" + courierPassword + "\","
@@ -72,6 +72,7 @@ public class Courier {
 
         return response.body().asString();
     }
+//запрос на логин курьера с входными полями
     public String login(String courierLogin, String courierPassword){
         String registerRequestBody = "{\"login\":\"" + courierLogin + "\","
                 + "\"password\":\"" + courierPassword + "\"}";
@@ -88,6 +89,7 @@ public class Courier {
 
         return response.body().asString();
     }
+// запрос на логин курьера
     public String login(){
         String registerRequestBody = "{\"login\":\"" + courierLogin + "\","
                 + "\"password\":\"" + courierPassword + "\"}";
@@ -100,11 +102,12 @@ public class Courier {
                 .post("https://qa-scooter.praktikum-services.ru/api/v1/courier/login");
         courierId=response.body().asString().substring(response.body().asString().indexOf(':') + 1, response.body().asString().indexOf('}'));
 
-        System.err.print(response.body().asString());
-        System.err.print(courierId);
+        //System.err.print(response.body().asString());
+        //System.err.print(courierId);
 
         return response.body().asString();
     }
+//запрос на удаление курьера
     public String  delete(){
         Response response = given()
                 .header("Content-type", "application/json")
@@ -112,44 +115,6 @@ public class Courier {
                 .delete("https://qa-scooter.praktikum-services.ru/api/v1/courier/"+getId());
 
         // System.err.print(response.body().asString());
-
-        return response.body().asString();
-    }
-    public void setEmptyLogin(){
-        courierLogin="";
-    }
-    public void setEmptyPassword(){
-        courierPassword="";
-    }
-    public String acceptOrder(String orderId, String courierId){
-        String registerRequestBody = "{\"\":\"" + courierLogin + "\","
-                + "\"password\":\"" + courierPassword + "\","
-                + "\"firstName\":\"" + courierFirstName + "\"}";
-
-        Response response = given()
-                .header("Content-type", "application/json")
-                .and()
-                .body(registerRequestBody)
-                .when()
-                .put("https://qa-scooter.praktikum-services.ru/api/v1/orders/accept/:id");
-
-        //System.err.print(response.body().asString());
-
-        return response.body().asString();
-    }
-    public String acceptOrder(String orderId){
-        String registerRequestBody = "{\"login\":\"" + courierLogin + "\","
-                + "\"password\":\"" + courierPassword + "\","
-                + "\"firstName\":\"" + courierFirstName + "\"}";
-
-        Response response = given()
-                .header("Content-type", "application/json")
-                .and()
-                .body(registerRequestBody)
-                .when()
-                .put("https://qa-scooter.praktikum-services.ru/api/v1/orders/accept/:id?:courierId");
-
-        //System.err.print(response.body().asString());
 
         return response.body().asString();
     }
